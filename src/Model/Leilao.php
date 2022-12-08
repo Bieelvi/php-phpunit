@@ -2,16 +2,23 @@
 
 namespace Alura\Leilao\Model;
 
+use DateTimeInterface;
+
 class Leilao
 {
     /** @var Lance[] */
     private array $lances;
     private string $descricao;
-    private bool $finalizado = false;
+    private bool $finalizado;
+    private DateTimeInterface $dataInicio;
+    private int $id;
 
-    public function __construct(string $descricao)
+    public function __construct(string $descricao, DateTimeInterface $dataInicio = null, int $id = null)
     {
         $this->descricao = $descricao;
+        $this->finalizado = false;
+        $this->dataInicio = $dataInicio ?? new \DateTimeImmutable();
+        $this->id = $id;
         $this->lances = [];
     }
 
@@ -32,12 +39,27 @@ class Leilao
         $this->lances[] = $lance;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     /**
      * @return Lance[]
      */
     public function getLances(): array
     {
         return $this->lances;
+    }
+
+    public function getDescricao(): string
+    {
+        return $this->descricao;
+    }
+
+    public function getDataInicio(): DateTimeInterface
+    {
+        return $this->dataInicio;
     }
 
     public function finaliza(): void
