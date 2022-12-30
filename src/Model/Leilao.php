@@ -2,18 +2,26 @@
 
 namespace Alura\Leilao\Model;
 
-use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'leiloes')]
 class Leilao
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id;
+    #[ORM\Column(type: 'string')]
+    private string $descricao;
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $dataInicio;
+    #[ORM\Column(type: 'boolean')]
+    private bool $finalizado = false;
     /** @var Lance[] */
     private array $lances;
-    private string $descricao;
-    private bool $finalizado;
-    private DateTimeInterface $dataInicio;
-    private int $id;
 
-    public function __construct(string $descricao, DateTimeInterface $dataInicio = null, int $id = null)
+    public function __construct(string $descricao, \DateTimeInterface $dataInicio = null, ?int $id = null)
     {
         $this->descricao = $descricao;
         $this->finalizado = false;
@@ -39,7 +47,7 @@ class Leilao
         $this->lances[] = $lance;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -57,7 +65,7 @@ class Leilao
         return $this->descricao;
     }
 
-    public function getDataInicio(): DateTimeInterface
+    public function getDataInicio(): \DateTimeInterface
     {
         return $this->dataInicio;
     }
@@ -70,6 +78,14 @@ class Leilao
     public function getFinalizado(): bool
     {
         return $this->finalizado;
+    }
+
+    public function temMaisDeUmaSemana(): bool
+    {
+        $hoje = new \DateTime();
+        $intervalo = $this->dataInicio->diff($hoje);
+
+        return $intervalo->days > 7;
     }
 
     private function lanceSeguidoUsuario(Lance $lance): bool

@@ -18,3 +18,8 @@ Avaliador (Alura\Leilao\Tests\Service\Avaliador)
  [x] Leilao finalizado nao pode receber propostas apor finalizado
  [x] Leilao finalizado nao pode ser avaliado
 
+Encerrador (Alura\Leilao\Tests\Service\Encerrador)
+ [x] Leiloes tem mais de uma semana devem ser encerrados
+ [x] Deve continuar o proecessamento ao encontrar erro ao enviar email
+ [x] So deve ser enviado lelao por email apos finalizado
+
